@@ -1,0 +1,11 @@
+name: Gobichat
+version: '${project.version}'
+main: com.github.kumo0621.gobichat.Gobichat
+api-version: 1.16
+commands:
+  gobi:
+    permission: gobi
+
+permissions:
+  gobi:
+    default: op
