@@ -5,11 +5,15 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
+import java.util.List;
 
 public final class Gobichat extends JavaPlugin implements org.bukkit.event.Listener {
 
@@ -28,12 +32,14 @@ public final class Gobichat extends JavaPlugin implements org.bukkit.event.Liste
     }
 
     FileConfiguration config;
+    String setmessage;
 
+    Collection<? extends Player> player = Bukkit.getOnlinePlayers();
 
     @EventHandler
     public void onPlayerchat(AsyncPlayerChatEvent e) {
 
-        String setmessage = config.getString(e.getPlayer().getName());
+        setmessage = config.getString(e.getPlayer().getName());
         if (setmessage != null) {
             e.setFormat("<%1$s> " + "%2$s" + setmessage);
 
@@ -55,6 +61,51 @@ public final class Gobichat extends JavaPlugin implements org.bukkit.event.Liste
                 }
             }
         }
+        if (command.getName().equals("random")) {
+            if (sender instanceof Player) {
+                if (args.length == 0) {
+                    sender.sendMessage("/random @r");
+                } else {
+                    for (int i = 0; i < args.length; i++) {
+                        String arg = args[i];
+
+                        if (arg.startsWith("@")) {
+                            try {
+                                List<Entity> selected = getServer().selectEntities(sender, arg);
+
+                                if (selected.size() == 1) {
+                                    Entity entity = selected.iterator().next();
+                                    args[i] = (entity instanceof Player) ? entity.getName() : entity.getUniqueId().toString();
+                                    String count = String.valueOf(RandomCount.random());
+                                    String get = config.getString(count);
+                                    sender.sendMessage(ChatColor.LIGHT_PURPLE + "[くもぱわ～] " + ChatColor.YELLOW + args[i] + ChatColor.WHITE + "さんの語尾をランダムに変更しました");
+                                    config.set(args[i], get);
+                                    saveConfig();
+                                }
+                            } catch (IllegalArgumentException ignored) {
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (command.getName().equals("allrandom")) {
+            if (sender instanceof Player) {
+                if (args.length == 0) {
+                    sender.sendMessage("allrandom");
+                } else {
+                    for (Player nameList : player) {
+                        String count2 = String.valueOf(RandomCount.random());
+                        String get2 = config.getString(count2);
+                        config.set(nameList.getName(), get2);
+                        saveConfig();
+                    }
+                    sender.sendMessage(ChatColor.LIGHT_PURPLE + "[くもぱわ～] " + ChatColor.GREEN + "プレイヤー全員" + ChatColor.WHITE + "の語尾を変更しました。");
+
+                }
+            }
+        }
         return super.onCommand(sender, command, label, args);
     }
+
 }

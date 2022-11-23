@@ -5,7 +5,14 @@ api-version: 1.16
 commands:
   gobi:
     permission: gobi
-
+  random:
+    permission: random
+  allrandom:
+    permission: allrandom
 permissions:
   gobi:
+    default: op
+  random:
+    default: op
+  allrandom:
     default: op
