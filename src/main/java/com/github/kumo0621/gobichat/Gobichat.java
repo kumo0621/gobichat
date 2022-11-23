@@ -91,18 +91,14 @@ public final class Gobichat extends JavaPlugin implements org.bukkit.event.Liste
         }
         if (command.getName().equals("allrandom")) {
             if (sender instanceof Player) {
-                if (args.length == 0) {
-                    sender.sendMessage("allrandom");
-                } else {
-                    for (Player nameList : player) {
-                        String count2 = String.valueOf(RandomCount.random());
-                        String get2 = config.getString(count2);
-                        config.set(nameList.getName(), get2);
-                        saveConfig();
-                    }
-                    sender.sendMessage(ChatColor.LIGHT_PURPLE + "[くもぱわ～] " + ChatColor.GREEN + "プレイヤー全員" + ChatColor.WHITE + "の語尾を変更しました。");
-
+                for (Player nameList : player) {
+                    String count2 = String.valueOf(RandomCount.random());
+                    String get2 = config.getString(count2);
+                    config.set(nameList.getName(), get2);
+                    saveConfig();
                 }
+                sender.sendMessage(ChatColor.LIGHT_PURPLE + "[くもぱわ～] " + ChatColor.GREEN + "プレイヤー全員" + ChatColor.WHITE + "の語尾を変更しました。");
+
             }
         }
         return super.onCommand(sender, command, label, args);
