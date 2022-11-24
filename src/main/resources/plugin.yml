@@ -9,10 +9,20 @@ commands:
     permission: random
   allrandom:
     permission: allrandom
+  cancel:
+    permission: cancel
+  allgobi:
+    permission: allgobi
+  gobiset:
+    permission: gobiset
 permissions:
   gobi:
     default: op
   random:
     default: op
-  allrandom:
+  cancel:
+    default: op
+  allgobi:
+    default: op
+  gobiset:
     default: op
